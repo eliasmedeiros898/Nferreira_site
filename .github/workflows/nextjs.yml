@@ -48,11 +48,19 @@ jobs:
             echo "Unable to determine package manager"
             exit 1
           fi
-      - name: Setup Node
-        uses: actions/setup-node@v4
+          
+      - name: Setup Node.js
+        uses: actions/setup-node@v4 # Mantém esta ação para configurar o Node.js e o cache
         with:
-          node-version: "20"
-          cache: "pnpm"
+          node-version: '20' # Mantenha a versão que você usa (ou use '20' ou '22' para LTS)
+          cache: 'pnpm'
+          package-manager: 'pnpm' # Mantenha esta linha, pois ela ajuda no cache e outras configurações
+
+      - name: Ensure pnpm is installed # <--- NOVA ETAPA: ADICIONE ESTA!
+        run: npm install -g pnpm # Usa npm para instalar pnpm globalmente
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile # Esta etapa agora encontrará o comando pnpm
       - name: Setup Pages
         uses: actions/configure-pages@v5
         with:
