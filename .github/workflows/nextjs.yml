@@ -53,14 +53,11 @@ jobs:
         uses: actions/setup-node@v4 # Mantenha a versão que você está usando (v2, v3 ou v4)
         with:
           node-version: '20' # RECOMENDAÇÃO: Mantenha ou atualize para 20 ou 22 para LTS
-          cache: 'pnpm'
+          cache: 'npm'
           # REMOVA A LINHA package-manager: 'pnpm' AQUI!
 
-      - name: Ensure pnpm is installed # <--- Mantenha esta etapa
-        run: npm install -g pnpm
-
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: npm ci 
       - name: Setup Pages
         uses: actions/configure-pages@v5
         with:
@@ -69,6 +66,10 @@ jobs:
           #
           # You may remove this line if you want to manage the configuration yourself.
           static_site_generator: next
+
+      - name: Build project # <--- MUDANÇA AQUI: de pnpm para npm
+        run: npm run build
+        
       - name: Restore cache
         uses: actions/cache@v4
         with:
